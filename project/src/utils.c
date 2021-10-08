@@ -1,10 +1,12 @@
+#include <stdio.h>
+#include <stddef.h>
 #include "utils.h"
 
 size_t timer_from(unsigned char from) {
-    size_t counter;
-    for (unsigned char i = from; i >= 0; --i) {
+    size_t counter = 0;
+    for (unsigned char i = from; i >= 1; --i) {
         ++counter;
-        printf(i);
+        printf("%c", i);
     }
     return counter;
 }
