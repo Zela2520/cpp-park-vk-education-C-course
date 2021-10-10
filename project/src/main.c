@@ -1,3 +1,4 @@
+#include "print.h"
 #include <stdio.h>
 #include "utils.h"
 #include <stdlib.h>
@@ -9,7 +10,7 @@
 #define TST_FOO_FIX     1
 #define TST_FOO_IMPL    2
 #define TST_MOD_IMPL    3
-
+#define TST_PRINT_IMPL  4
 
 /* NOTE(stitaevskiy):
  * We use `atoi` function just for simplification and code reducing.
@@ -64,6 +65,13 @@ int main(int argc, const char** argv) {
             // a separate C-module (not in `main` or `utils` module)
 	     break;
         }
+	case TST_PRINT_IMPL: {
+	    int last_num = atoi(data);
+	    int first_num = 1;
+	    display(first_num, last_num);
+	    break;
+	 }
+
         default: {
             return ERR_WRONG_FLG;
         }
