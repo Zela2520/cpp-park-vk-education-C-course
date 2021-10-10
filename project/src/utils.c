@@ -18,8 +18,17 @@ size_t timer_from(int from) {
 }
 
 // TODO(daniil-zzz@mail.ru): Implement `power of` function
-/*
+
 int custom_pow(int base, int power) {
-    return 0;
+	int res = 1;
+	int currentPower = base;
+	while (power > 0) {
+	if (power % 2 == 1) {
+		res *= currentPower;
+	}
+	currentPower *= currentPower;
+	power = power >> 1;
+	}
+    return res;
 }
-*/
+
