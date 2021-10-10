@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stddef.h>
 #include "utils.h"
 #include <stdlib.h>
 
@@ -46,19 +45,21 @@ int main(int argc, const char** argv) {
             if (argc == 4) {
                 // int base = atoi(data);
                 // int pow =  atoi(argv[3]);
-                // int res = custom_pow(base, pow);    // TODO: Implement me
+                // int res = custom_pow(base, pow);    // TODO(daniil-zzz@mail.ru): Implement me
 
                 // printf("%i\n", res);
             } else {
                 return ERR_ARGS_COUNT;
             }
+	    break;
         }
         case TST_MOD_IMPL: {
             // int num = atoi(data);
 
-            // TODO: Print to stdout `1` if `num` is prime number and `0` otherwise
+            // TODO(daniil-zzz@mail.ru): Print to stdout `1` if `num` is prime number and `0` otherwise
             // This function MUST be implemented in
             // a separate C-module (not in `main` or `utils` module)
+	     break;
         }
         default: {
             return ERR_WRONG_FLG;
