@@ -3,16 +3,14 @@
 
 size_t timer_from(int from) {
 	size_t counter = 0;
-    	for (int i = from; i >= 0; --i) {
+    	for (int i = from; i > 0; --i) {
         	++counter;
-		if(i == 0) {
-			printf("%d", i);
-		} else {
-			printf("%d ", i);
-		}
+		printf("%d ", i);
     	}
+
     	if (counter != 0) {
-	    	printf("\n");
+	    	printf("0\n");
+		++counter;
     	}
     	return counter;
 }
