@@ -3,6 +3,7 @@
 #include <string.h>
 #include "utils.h"
 
+// создаём пользовательский тип данных для хранения записей об объектах
 struct masterRecord {
 	int Number;
        	char Name[20];
@@ -13,21 +14,27 @@ struct masterRecord {
 	double credit_limit;
 	double cash_payments;
 };
+
+// создаём псевдоним для пользовательского типа данных
 typedef struct masterRecord Data;
 
 
 int main(void) {
+	// выполним объявление необходимых переменных, функций и потоков
 	int choice;
 	void masterWrite(FILE *ofPTR, Data Client),
 	     transactionWrite(FILE *ofPTR, Data transfer),
 	     blackRecord(FILE *ofPTR, FILE *ofPTR_2, FILE *blackrecord, Data client_data, Data transfer);
 	FILE *Ptr, *Ptr_2, *blackrecord;
+	// выполним инициализацию экземпляров структуры
 	Data client_data = {0};
 	Data transfer = {0};
 	printf("%s", "please enter action\n1 enter data client:\n2 enter data transaction:\n3 update base\n");
-	while (scanf("%10d", &choice) != -1) {
+	// производим выбранные пользователем действия над потоками
+	while (scanf("%d", &choice) != -1) {
 		switch(choice) {
 			case 1:
+				// Записываем в файл для хранения данных о клиенте
 				Ptr = fopen("record.dat", "r+");
 				if (Ptr == NULL) {
 					puts("Not aсcess");
@@ -37,6 +44,7 @@ int main(void) {
 				}
 				break;
 			case 2:
+				// Записываем в файл для хранения данных о переводах
 				Ptr = fopen(filename, "r+");
 				if (Ptr == NULL) {
 					puts("Not aсcess");
@@ -46,6 +54,10 @@ int main(void) {
 				}
 				break;
 			case 3:
+				// Считываем данные о клиенте и его переводах
+				// из соответствующих файлов.
+				// На основе выполненных клиентом платежей
+				// формируем кредитный лимит каждого клиента
 				Ptr = fopen("record.dat", "r");
 				Ptr_2 = fopen("transaction.dat", "r");
 				blackrecord = fopen("blackrecord.dat", "w");
@@ -68,6 +80,7 @@ int main(void) {
 }
 
 
+// выполним определение соответствующих функций
 void masterWrite(FILE *ofPTR, Data Client) {
 	printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
 			"1 Number account: ",
@@ -79,7 +92,7 @@ void masterWrite(FILE *ofPTR, Data Client) {
 			"7 Client credit limit: ",
 			"8 Client cash payments: "
 	);
-	while (scanf("%20d%20s%20s%20s%20s%20lf%20lf%20lf",
+	while (scanf("%12d%20s%20s%30s%15s%lf%lf%lf",
 				&Client.Number,
 				Client.Name,
 				Client.Surname,
@@ -124,7 +137,7 @@ void transactionWrite(FILE *ofPtr, Data transfer) {
 
 
 void blackRecord(FILE *ofPTR, FILE  *ofPTR_2, FILE *blackrecord, Data client_data, Data transfer) {
-	while (fscanf(ofPTR, "%12d%11s%11s%16s%20s%lf%lf%lf",
+	while (fscanf(ofPTR, "%12d%20s%20s%30s%15s%lf%lf%lf",
 				&client_data.Number,
 				client_data.Name,
 				client_data.Surname,
