@@ -2,8 +2,8 @@
 #define  PROJECT_INCLUDE_RECORD_H_
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 #include "information.h"
 
 // создаём пользовательский тип данных для хранения записей об объектах
@@ -18,11 +18,9 @@ typedef struct {
 	double cash_payments;
 } Data;
 
-void masterWrite(FILE *ofPTR, Data Client);
-void transactionWrite(FILE *ofPTR, Data transfer);
-void blackRecord(FILE *ofPTR, FILE *ofPTR_2, FILE *blackrecord, Data client_data, Data transfer);
-
-
-
+int fromTheStream(FILE *fptr, Data *data, const char *filename);
+void intoTheStream(FILE *fptr, Data data, const char *filename);
+void writeToFile(const char *filename, Data data);
+void readFromFile(const char *filename_1, const char *filename_2, Data client, Data transfer);
 
 #endif  // PROJECT_INCLUDE_RECORD_H_

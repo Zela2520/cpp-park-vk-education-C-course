@@ -1,64 +1,35 @@
 #include "record.h"
 
-void masterWrite(FILE *ofPTR, Data Client) {
-	clientsInformation();
-	while (scanf("%12d%20s%20s%30s%15s%lf%lf%lf",
-				&Client.Number,
-				Client.Name,
-				Client.Surname,
-				Client.addres,
-				Client.TelNumber,
-				&Client.indebtedness,
-				&Client.credit_limit,
-				&Client.cash_payments) != -1) {
-		fprintf(ofPTR, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
-				Client.Number,
-				Client.Name,
-				Client.Surname,
-				Client.addres,
-				Client.TelNumber,
-				Client.indebtedness,
-				Client.credit_limit,
-				Client.cash_payments);
-		clientsInformation();
-	}
-}
-
-
-void transactionWrite(FILE *ofPTR, Data transfer) {
-	transactionsInformation();
-	while (scanf("%d %lf", &transfer.Number, &transfer.cash_payments) != -1) {
-		fprintf(ofPTR, "%-3d%-6.2f\n", transfer.Number, transfer.cash_payments);
-		transactionsInformation();
-	}
-}
-
-
-void blackRecord(FILE *ofPTR, FILE  *ofPTR_2, FILE *blackrecord, Data client_data, Data transfer) {
-	while (fscanf(ofPTR, "%12d%20s%20s%30s%15s%lf%lf%lf",
-				&client_data.Number,
-				client_data.Name,
-				client_data.Surname,
-				client_data.addres,
-				client_data.TelNumber,
-				&client_data.indebtedness,
-				&client_data.credit_limit,
-				&client_data.cash_payments) != -1) {
-		while (fscanf(ofPTR_2, "%d %lf", &transfer.Number, &transfer.cash_payments) != -1) {
-			if(client_data.Number == transfer.Number && transfer.cash_payments != 0) {
-				client_data.credit_limit += transfer.cash_payments;
-			}
+void writeToFile(const char *filename, Data data) {
+	FILE *fptr = fopen(filename, "r+");
+	if (fptr == NULL) {
+		puts("Not access");
+	} else {
+		while (fromTheStream(stdin, &data, filename) != -1) {
+			intoTheStream(fptr, data, filename);
 		}
-		fprintf(blackrecord, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
-				client_data.Number,
-				client_data.Name,
-				client_data.Surname,
-				client_data.addres,
-				client_data.TelNumber,
-				client_data.indebtedness,
-				client_data.credit_limit,
-				client_data.cash_payments);
-		rewind(ofPTR_2);
+		fclose(fptr);
 	}
 }
 
+void readFromFile(const char *filename_1, const char *filename_2, Data client, Data transfer) {
+	FILE *fptr_1 = fopen(filename_1, "r");
+	FILE *fptr_2 = fopen(filename_2, "r");
+	FILE *fptr_3 = fopen("blackrecord.dat", "w");
+	if (fptr_1 == NULL || fptr_2 == NULL) {
+		puts("Not access");
+	} else {
+		while (fromTheStream(fptr_1, &client, filename_1) != -1) {
+			while (fromTheStream(fptr_2, &transfer, filename_2) != -1) {
+				if (client.Number == transfer.Number && transfer.cash_payments != 0) {
+					client.credit_limit += transfer.cash_payments;
+				}
+			}
+			intoTheStream(fptr_3, client, "blackrecord.dat");
+			rewind(fptr_2);
+		}
+		fclose(fptr_1);
+		fclose(fptr_2);
+	  }
+	fclose(fptr_3);
+}
