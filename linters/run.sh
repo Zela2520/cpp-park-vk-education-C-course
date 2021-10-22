@@ -11,7 +11,7 @@ print_header "RUN cppcheck"
 cppcheck project --enable=all --inconclusive --error-exitcode=1 -I project/include --suppress=missingIncludeSystem
 
 print_header "RUN clang-tidy"
-clang-tidy project/**/* -- -Iproject/include
+clang-tidy --checks=-clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling project/**/* -- -Iproject/include
 
 print_header "RUN cpplint.py"
 python3 ./linters/cpplint/cpplint.py --extensions=c project/include/* project/src/*

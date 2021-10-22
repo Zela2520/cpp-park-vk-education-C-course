@@ -1,7 +1,9 @@
 #include "record.h"
 
 int fromTheStream(FILE *fptr, Data *data, const char *filename) {
-	if (strcmp(filename, "record.dat") == 0 || strcmp(filename, "blackrecord.dat") == 0) {
+	if (strcmp(filename, "record.dat") == 0 ||
+			strcmp(filename, "blackrecord.dat") == 0 ||
+			strcmp(filename, "test.dat") == 0) {
 		clientsInformation();
 		return fscanf(fptr, "%12d%20s%20s%30s%15s%lf%lf%lf",
 				&data->Number,
@@ -20,7 +22,9 @@ int fromTheStream(FILE *fptr, Data *data, const char *filename) {
 }
 
 void intoTheStream(FILE *fptr, Data data, const char *filename) {
-	if (strcmp(filename, "record.dat") == 0 || strcmp(filename, "blackrecord.dat") == 0) {
+	if (strcmp(filename, "record.dat") == 0 ||
+			strcmp(filename, "blackrecord.dat") == 0 ||
+			strcmp(filename, "test.dat") == 0) {
 		fprintf(fptr, "%-12d%-11s%-11s%-16s%20s%12.2f%12.2f%12.2f\n",
 				data.Number,
 				data.Name,
