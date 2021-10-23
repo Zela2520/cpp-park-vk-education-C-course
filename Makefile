@@ -1,5 +1,5 @@
 TARGET = ./main.out
-TARGET2 = ./main_module.out
+TARGET_TEST = ./main_module.out
 HDRS_DIR = project/include
 
 SRCS = project/src/main.c \
@@ -7,7 +7,7 @@ SRCS = project/src/main.c \
        project/src/record.c \
        project/src/streams.c
 
-SRCS2 = project/src/main_module.c \
+SRCS_TEST = project/src/main_module.c \
 	project/src/test_assistants.c
 
 .PHONY: all build rebuild check test memtest clean
@@ -17,12 +17,12 @@ all: clean check test memtest
 $(TARGET): $(SRCS) 
 	$(CC) -Wpedantic -Wall -Wextra -Werror -I $(HDRS_DIR) -o $(TARGET) $(CFLAGS) $(SRCS)
 
-$(TARGET2): $(SRCS2) 
-	$(CC) -Wpedantic -Wall -Wextra -Werror -I $(HDRS_DIR) -o $(TARGET2) $(CFLAGS) $(SRCS2)
+$(TARGET2): $(SRCS_TEST) 
+	$(CC) -Wpedantic -Wall -Wextra -Werror -I $(HDRS_DIR) -o $(TARGET_TEST) $(CFLAGS) $(SRCS_TEST)
 
 build: $(TARGET)
 
-build: $(TARGET2)
+build: $(TARGET_TEST)
 
 rebuild: clean build
 
@@ -36,4 +36,4 @@ memtest: $(TARGET)
 	./btests/run.sh $(TARGET) --memcheck
 
 clean:
-	rm -rf $(TARGET) $(TARGET2)
+	rm -rf $(TARGET) $(TARGET_TEST)
