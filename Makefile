@@ -17,7 +17,7 @@ all: clean check test memtest
 $(TARGET): $(SRCS) 
 	$(CC) -Wpedantic -Wall -Wextra -Werror -I $(HDRS_DIR) -o $(TARGET) $(CFLAGS) $(SRCS)
 
-$(TARGET2): $(SRCS_TEST) 
+$(TARGET_TEST): $(SRCS_TEST) 
 	$(CC) -Wpedantic -Wall -Wextra -Werror -I $(HDRS_DIR) -o $(TARGET_TEST) $(CFLAGS) $(SRCS_TEST)
 
 build: $(TARGET)
