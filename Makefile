@@ -1,5 +1,5 @@
 TARGET = ./main.out
-TARGET_TEST = ./main_module.out
+TARGET_TEST = ./test_module.out
 HDRS_DIR = project/include
 
 SRCS = project/src/main.c \
@@ -7,7 +7,7 @@ SRCS = project/src/main.c \
        project/src/record.c \
        project/src/streams.c
 
-SRCS_TEST = project/src/main_module.c \
+SRCS_TEST = project/src/test_module.c \
 	project/src/test_assistants.c
 
 .PHONY: all build rebuild check test memtest clean
