@@ -1,35 +1,43 @@
 #include "record.h"
 
-void writeToFile(const char *filename, Data data) {
-	FILE *fptr = fopen(filename, "r+");
-	if (fptr == NULL) {
-		puts("Not access");
+void write_to_file(const char *writing_file_name, Data reading_data) {
+	FILE *writing_file = fopen(writing_file_name, "r+");
+	if (writing_file == NULL) {
+		puts("There is no access to the file");
 	} else {
-		while (fromTheStream(stdin, &data, filename) != -1) {
-			intoTheStream(fptr, data, filename);
+		while (read_from_the_stream(stdin, &reading_data, writing_file_name) != -1) {
+			write_into_the_stream(writing_file, reading_data, writing_file_name);
 		}
-		fclose(fptr);
+		fclose(writing_file);
 	}
 }
 
-void readFromFile(const char *filename_1, const char *filename_2, Data client, Data transfer) {
-	FILE *fptr_1 = fopen(filename_1, "r");
-	FILE *fptr_2 = fopen(filename_2, "r");
-	FILE *fptr_3 = fopen("blackrecord.dat", "w");
-	if (fptr_1 == NULL || fptr_2 == NULL) {
-		puts("Not access");
+void read_from_file(const char *reading_client_filename,
+		const char *reading_transfer_filename,
+		Data writing_clients_data,
+		Data writing_transfers_data) {
+	FILE *off_client_fptr = fopen(reading_client_filename, "r");
+	FILE *off_transfer_fptr = fopen(reading_transfer_filename, "r");
+	FILE *into_record_fptr = fopen("blackrecord.dat", "w");
+	if (off_client_fptr == NULL || off_transfer_fptr == NULL) {
+		puts("There is no access to the file");
 	} else {
-		while (fromTheStream(fptr_1, &client, filename_1) != -1) {
-			while (fromTheStream(fptr_2, &transfer, filename_2) != -1) {
-				if (client.Number == transfer.Number && transfer.cash_payments != 0) {
-					client.credit_limit += transfer.cash_payments;
+		while (read_from_the_stream(off_client_fptr,
+					&writing_clients_data,
+					reading_client_filename) != -1) {
+			while (read_from_the_stream(off_transfer_fptr,
+						&writing_transfers_data,
+						reading_transfer_filename) != -1) {
+				if (writing_clients_data.number == writing_transfers_data.number &&
+						writing_transfers_data.cash_payments != 0) {
+					writing_clients_data.credit_limit += writing_transfers_data.cash_payments;
 				}
 			}
-			intoTheStream(fptr_3, client, "blackrecord.dat");
-			rewind(fptr_2);
+			write_into_the_stream(into_record_fptr, writing_clients_data, "blackrecord.dat");
+			rewind(off_transfer_fptr);
 		}
-		fclose(fptr_1);
-		fclose(fptr_2);
+		fclose(off_client_fptr);
+		fclose(off_transfer_fptr);
 	  }
-	fclose(fptr_3);
+	fclose(into_record_fptr);
 }

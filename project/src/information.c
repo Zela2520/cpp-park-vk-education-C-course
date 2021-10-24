@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 
-void clientsInformation() {
+void clients_information() {
 	printf("%s\n%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n",
 			"1 Number account: ",
 			"2 Client name: ",
@@ -13,12 +13,12 @@ void clientsInformation() {
 			"8 Client cash payments: ");
 }
 
-void transactionsInformation() {
+void transactions_information() {
 	printf("%s\n%s\n",
 			"1 Number account: ",
 			"2 Client cash payments: ");
 }
 
-void actionsInformation() {
+void actions_information() {
 	printf("%s", "please enter action\n1 enter data client:\n2 enter data transaction:\n3 update base\n");
 }

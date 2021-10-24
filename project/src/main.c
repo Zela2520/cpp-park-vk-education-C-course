@@ -1,34 +1,38 @@
 #include "record.h"
 
+#define WRITE_CLIENT_DATA 1
+#define WRITE_TRANSFER_DATA 2
+#define READ_CLIENT_DATA 3
+
 int main(void) {
 	int choice;
 	// выполним инициализацию экземпляров структуры
 	Data client_data = {0};
 	Data transfer = {0};
-	actionsInformation();
+	actions_information();
 	// производим выбранные пользователем действия над потоками
-	while (scanf("%d", &choice) != -1) {
+	while (scanf("%d", &choice) != EOF) {
 		switch(choice) {
-			case 1:
+			case WRITE_CLIENT_DATA:
 				// Записываем в файл для хранения данных о клиенте
-				writeToFile("record.dat", client_data);
+				write_to_file("record.dat", client_data);
 				break;
-			case 2:
+			case WRITE_TRANSFER_DATA:
 				// Записываем в файл для хранения данных о переводах
-				writeToFile("transaction.dat", transfer);
+				write_to_file("transaction.dat", transfer);
 				break;
-			case 3:
+			case READ_CLIENT_DATA:
 				// Считываем данные о клиенте и его переводах
 				// из соответствующих файлов.
 				// На основе выполненных клиентом платежей
 				// формируем кредитный лимит каждого клиента
-				readFromFile("record.dat", "transaction.dat", client_data, transfer);
+				read_from_file("record.dat", "transaction.dat", client_data, transfer);
 				break;
 			default:
 				puts("error");
 				break;
 		}
-		actionsInformation();
+		actions_information();
 	}
 	return 0;
 }
