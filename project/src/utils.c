@@ -1,31 +1,33 @@
 #include <stdio.h>
-#include "utils.h"
+#include <stddef.h>
 
 size_t timer_from(int from) {
-	size_t counter = 0;
+	size_t ticks_count = 0;
     	for (int i = from; i > 0; --i) {
-        	++counter;
+        	++ticks_count;
 		printf("%d ", i);
     	}
-
-    	if (counter != 0) {
+    	if (ticks_count != 0) {
 	    	printf("0\n");
-		++counter;
+		++ticks_count;
     	}
-    	return counter;
+    	return ticks_count;
 }
 
 
 int custom_pow(int base, int power) {
+	while (power < 0) {
+		puts("Incorrect input data.\nPlease try again.");
+		scanf("%i", &power);
+	}
 	int result = 1;
-	int currentPower = base;
+	int current_power = base;
 	while (power > 0) {
-		// смотрим чему равен последний бит числа в двоичном представлении
-		if (power % 2 == 1) {  // если последний бит равен единицы, то он участвует в двоичном разложение числа
-			result *= currentPower;  // добавим соответствующую степень двойки к результату
+		if (power % 2 == 1) {
+			result *= current_power;
 		}
-		currentPower *= currentPower;
-		power = power >> 1;  // переходим к обработке следующего бита
+		current_power *= current_power;
+		power = power >> 1;
 	}
 	return result;
 }
