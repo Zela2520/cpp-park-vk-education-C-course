@@ -6,10 +6,9 @@
 #include <stdlib.h>
 #include "information.h"
 
-// создаём пользовательский тип данных для хранения записей об объектах
 typedef struct {
 	int number;
-       	char name[20];
+	char name[20];
 	char surname[20];
 	char addres[30];
 	char tel_number[15];
