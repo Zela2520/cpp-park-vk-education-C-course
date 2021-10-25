@@ -20,9 +20,7 @@ $(TARGET): $(SRCS)
 $(TARGET_TEST): $(SRCS_TEST) 
 	$(CC) -Wpedantic -Wall -Wextra -Werror -I $(HDRS_DIR) -o $(TARGET_TEST) $(CFLAGS) $(SRCS_TEST)
 
-build: $(TARGET)
-
-build: $(TARGET_TEST)
+build: $(TARGET) $(TARGET_TEST)
 
 rebuild: clean build
 

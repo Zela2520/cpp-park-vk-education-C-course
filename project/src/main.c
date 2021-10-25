@@ -5,10 +5,10 @@
 #define READ_CLIENT_DATA 3
 
 int main(void) {
-	int choice;
+	int choice = 0;
 	// выполним инициализацию экземпляров структуры
-	Data client_data = {0};
-	Data transfer = {0};
+	Data client_data = {0, "\0", "\0", "\0", "\0", 0, 0, 0};
+	Data transfer = {0, "\0", "\0", "\0", "\0", 0, 0, 0};
 	actions_information();
 	// производим выбранные пользователем действия над потоками
 	while (scanf("%d", &choice) != EOF) {
