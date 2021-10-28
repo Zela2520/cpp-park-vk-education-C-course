@@ -101,8 +101,7 @@ void free_matrix(Matrix* matrix) {
 
 // Basic operations
 int get_rows(const Matrix* matrix, size_t* rows) {
-	if (matrix != NULL && matrix->ptr_matrix != NULL
-			&& sizeof(matrix->ptr_matrix) / sizeof(double *) == matrix->number_of_rows){
+	if (matrix != NULL && matrix->ptr_matrix != NULL && matrix->number_of_rows != 0) {
 		*rows = matrix->number_of_rows;
 		return 0;
 	} else {
@@ -111,12 +110,9 @@ int get_rows(const Matrix* matrix, size_t* rows) {
 }
 
 int get_cols(const Matrix* matrix, size_t* cols) {
-	// проверяем существует ли матрица и выделилась ли память под неё
-	// проверяем равенство столбцов в матрице
-	if (matrix != NULL && matrix->ptr_matrix != NULL){
+	if (matrix != NULL && matrix->ptr_matrix != NULL && matrix->number_of_cols != 0) {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
-			if (matrix->ptr_matrix[row] == NULL
-					|| sizeof(matrix->ptr_matrix[row]) / sizeof(double) != matrix->number_of_cols) {
+			if (matrix->ptr_matrix[row] == NULL) {
 				puts("Error in the matrix entry");
 				return 1;
 			}
@@ -128,36 +124,34 @@ int get_cols(const Matrix* matrix, size_t* cols) {
 	}
 }
 
-int get_elem(const Matrix* matrix, size_t row, size_t col, double* val) {
+int get_elem(const Matrix* matrix, size_t rows, size_t cols, double* val) {
 	if (matrix != NULL && matrix->ptr_matrix != NULL
-			&& matrix->number_of_rows >= row
-			&& matrix->number_of_cols >= col) {
-		for (size_t i = 0; i < matrix->number_of_rows; ++i) {
-			if (matrix->ptr_matrix[i] == NULL
-					|| sizeof(matrix->ptr_matrix[i]) / sizeof(double) != matrix->number_of_cols) {
+			&& matrix->number_of_rows >= rows
+			&& matrix->number_of_cols >= cols) {
+		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
+			if (matrix->ptr_matrix[row] == NULL) {
 				puts("Error in the matrix entry");
 				return 1;
 			}
 		}
-		*val = matrix->ptr_matrix[row][col];
+		*val = matrix->ptr_matrix[rows][cols];
 		return 0;
 	} else {
 		return 1;
 	}
 }
 
-int set_elem(Matrix* matrix, size_t row, size_t col, double val) {
+int set_elem(Matrix* matrix, size_t rows, size_t cols, double val) {
 	if (matrix != NULL && matrix->ptr_matrix != NULL
-			&& matrix->number_of_rows >= row
-			&& matrix->number_of_cols >= col) {
-		for (size_t i = 0; i < matrix->number_of_rows; ++i) {
-			if (matrix->ptr_matrix[i] == NULL
-					|| sizeof(matrix->ptr_matrix[i]) / sizeof(double) != matrix->number_of_cols) {
+			&& matrix->number_of_rows >= rows
+			&& matrix->number_of_cols >= cols) {
+		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
+			if (matrix->ptr_matrix[row] == NULL) {
 				puts("Error in the matrix entry");
 				return 1;
 			}
 		}
-		matrix->ptr_matrix[row][col] = val;
+		matrix->ptr_matrix[rows][cols] = val;
 		return 0;
 	} else {
 		return 1;
@@ -166,5 +160,31 @@ int set_elem(Matrix* matrix, size_t row, size_t col, double val) {
 
 // Math operations
 Matrix* mul_scalar(const Matrix* matrix, double val) {
-	;
+	if (matrix != NULL && matrix->ptr_matrix != NULL) {
+		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
+			if (matrix->ptr_matrix[row] == NULL) {
+				puts("Error in the matrix entry");
+				return NULL;
+			}
+		}
+		Matrix* newmatrix = create_matrix(matrix->number_of_rows, matrix->number_of_cols);
+		if (newmatrix != NULL && newmatrix->ptr_matrix != NULL) {
+			for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
+				if (newmatrix->ptr_matrix[row] == NULL) {
+					puts("Error in the matrix entry");
+					return NULL;
+				}
+			}
+			for (size_t row = 0; row < matrix->number_of_rows; ++row) {
+				for (size_t col = 0; col < matrix->number_of_cols; ++col) {
+					newmatrix->ptr_matrix[row][col] = matrix->ptr_matrix[row][col] * val;
+				}
+			}
+			return newmatrix;
+		} else {
+			return NULL;
+		}
+	} else {
+		return NULL;
+	}
 }

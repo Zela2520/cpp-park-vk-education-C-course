@@ -18,8 +18,8 @@ void free_matrix(Matrix* matrix);
 // Basic operations
 int get_rows(const Matrix* matrix, size_t* rows);
 int get_cols(const Matrix* matrix, size_t* cols);
-int get_elem(const Matrix* matrix, size_t row, size_t col, double* val);
-int set_elem(Matrix* matrix, size_t row, size_t col, double val);
+int get_elem(const Matrix* matrix, size_t rows, size_t cols, double* val);
+int set_elem(Matrix* matrix, size_t rows, size_t cols, double val);
 
 // Math operations
 Matrix* mul_scalar(const Matrix* matrix, double val);
