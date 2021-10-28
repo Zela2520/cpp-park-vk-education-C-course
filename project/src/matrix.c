@@ -188,3 +188,151 @@ Matrix* mul_scalar(const Matrix* matrix, double val) {
 		return NULL;
 	}
 }
+
+Matrix* transp(const Matrix* matrix) {
+	if (matrix != NULL && matrix->ptr_matrix != NULL) {
+		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
+			if (matrix->ptr_matrix[row] == NULL) {
+				puts("Error in the matrix entry");
+				return NULL;
+			}
+		}
+		Matrix* newmatrix = create_matrix(matrix->number_of_rows, matrix->number_of_cols);
+		if (newmatrix != NULL && newmatrix->ptr_matrix != NULL) {
+			for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
+				if (newmatrix->ptr_matrix[row] == NULL) {
+					puts("Error in the matrix entry");
+					return NULL;
+				}
+			}
+			for (size_t row = 0; row < matrix->number_of_rows; ++row) {
+				for (size_t col = 0; col < matrix->number_of_cols; ++col) {
+					newmatrix->ptr_matrix[row][col] = matrix->ptr_matrix[col][row];
+				}
+			}
+			return newmatrix;
+		} else {
+			return NULL;
+		}
+	} else {
+		return NULL;
+	}
+}
+
+Matrix* sum(const Matrix* l, const Matrix* r) {
+	if (l != NULL && l->ptr_matrix != NULL
+			&& r != NULL && r->ptr_matrix != NULL
+			&& l->number_of_rows == r->number_of_rows
+			&& l->number_of_cols == r->number_of_cols) {
+		for (size_t row = 0; row < l->number_of_rows; ++row) {
+			if (l->ptr_matrix[row] == NULL) {
+				puts("Error in the matrix entry");
+				return NULL;
+			}
+		}
+		for (size_t row = 0; row < r->number_of_rows; ++row) {
+			if (r->ptr_matrix[row] == NULL) {
+				puts("Error in the matrix entry");
+				return NULL;
+			}
+		}
+		Matrix *newmatrix = create_matrix(l->number_of_rows, l->number_of_cols);
+		if (newmatrix != NULL && newmatrix->ptr_matrix != NULL) {
+                        for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
+                                if (newmatrix->ptr_matrix[row] == NULL) {
+                                        puts("Error in the matrix entry");
+                                        return NULL;
+                                }
+                        }
+			for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
+				for (size_t col = 0; col < newmatrix->number_of_cols; ++col) {
+					newmatrix->ptr_matrix[row][col] = l->ptr_matrix[row][col] + r->ptr_matrix[row][col];
+				}
+			}
+			return newmatrix;
+		} else {
+			return NULL;
+		}
+	} else {
+		return NULL;
+	}
+}
+
+Matrix* sub(const Matrix* l, const Matrix* r) {
+	if (l != NULL && l->ptr_matrix != NULL
+			&& r != NULL && r->ptr_matrix != NULL
+			&& l->number_of_rows == r->number_of_rows
+			&& l->number_of_cols == r->number_of_cols) {
+		for (size_t row = 0; row < l->number_of_rows; ++row) {
+			if (l->ptr_matrix[row] == NULL) {
+				puts("Error in the matrix entry");
+				return NULL;
+			}
+		}
+		for (size_t row = 0; row < r->number_of_rows; ++row) {
+			if (r->ptr_matrix[row] == NULL) {
+				puts("Error in the matrix entry");
+				return NULL;
+			}
+		}
+		Matrix *newmatrix = create_matrix(l->number_of_rows, l->number_of_cols);
+		if (newmatrix != NULL && newmatrix->ptr_matrix != NULL) {
+                        for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
+                                if (newmatrix->ptr_matrix[row] == NULL) {
+                                        puts("Error in the matrix entry");
+                                        return NULL;
+                                }
+                        }
+			for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
+				for (size_t col = 0; col < newmatrix->number_of_cols; ++col) {
+					newmatrix->ptr_matrix[row][col] = l->ptr_matrix[row][col] - r->ptr_matrix[row][col];
+				}
+			}
+			return newmatrix;
+		} else {
+			return NULL;
+		}
+	} else {
+		return NULL;
+	}
+}
+
+Matrix* mul(const Matrix* l, const Matrix* r) {
+	if (l != NULL && l->ptr_matrix != NULL
+			&& r != NULL && r->ptr_matrix != NULL
+			&& l->number_of_rows == r->number_of_cols) {
+		for (size_t row = 0; row < l->number_of_rows; ++row) {
+			if (l->ptr_matrix[row] == NULL) {
+				puts("Error in the matrix entry");
+				return NULL;
+			}
+		}
+		for (size_t row = 0; row < r->number_of_rows; ++row) {
+			if (r->ptr_matrix[row] == NULL) {
+				puts("Error in the matrix entry");
+				return NULL;
+			}
+		}
+		Matrix *newmatrix = create_matrix(l->number_of_rows, r->number_of_cols);
+		if (newmatrix != NULL && newmatrix->ptr_matrix != NULL) {
+                        for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
+                                if (newmatrix->ptr_matrix[row] == NULL) {
+                                        puts("Error in the matrix entry");
+                                        return NULL;
+                                }
+                        }
+			for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
+				for (size_t col = 0; col < newmatrix->number_of_cols; ++col) {
+					for (size_t i = 0; i < r->number_of_rows; ++i) {
+						newmatrix->ptr_matrix[row][col] = l->ptr_matrix[row][i] * r->ptr_matrix[i][col];
+					}
+				}
+			}
+			return newmatrix;
+		} else {
+			return NULL;
+		}
+	} else {
+		return NULL;
+	}
+}
