@@ -339,15 +339,17 @@ int det(const Matrix* matrix, double* val) {
 			return 0;
 		} else {
 			Matrix* newmatrix = create_matrix(matrix->number_of_rows - 1, matrix->number_of_cols - 1);
+			double sum_res = 0;
 			int sig_n = 1;
 			for (size_t col = 0; col < matrix->number_of_cols; ++col) {
 				reduce_matrix(matrix, 0, col, newmatrix);
 				if (det(newmatrix, val) == 0) {
-		    			double temp_res = *val;
-					*val += sig_n * matrix->ptr_matrix[0][col] * temp_res;
+		    			double temp_res = *val * matrix->ptr_matrix[0][col];
+					sum_res += sig_n * temp_res;
 					sig_n *= -1;
 				}
 			}
+			*val = sum_res;
 			free_matrix(newmatrix);
 			return 0;
 		}
@@ -360,6 +362,23 @@ int det(const Matrix* matrix, double* val) {
 		return 1;
 	}
 }
+
+Matrix* adj(const Matrix* matrix) {
+	if ((matrix != NULL) && (matrix->ptr_matrix != NULL)) {
+		return (Matrix*)1;
+	} else {
+		return NULL;
+	}
+}
+
+Matrix* inv(const Matrix* matrix) {
+	if ((matrix != NULL) && (matrix->ptr_matrix != NULL)) {
+		return (Matrix*)1;
+	} else {
+		return NULL;
+	}
+}
+
 
 void show_the_matrix(const Matrix* matrix) {
 	if (matrix != NULL && matrix->ptr_matrix != NULL) {
