@@ -18,7 +18,7 @@ Matrix* create_matrix_from_file(const char* path_file) {
 	}
 	// читаем указан ли размер матрицы в файле, проверяем на корректность данные
 	if (fscanf(off_fptr, "%zu%zu", &newmatrix->number_of_rows, &newmatrix->number_of_cols) != 2) {
-		puts("The matrix does not exist");
+		puts("The matrix is incorrect");
 		free(newmatrix);
 		fclose(off_fptr);
 		return NULL;
@@ -45,7 +45,7 @@ Matrix* create_matrix_from_file(const char* path_file) {
 	for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
 		for (size_t col = 0; col < newmatrix->number_of_cols; ++col) {
 			if (fscanf(off_fptr, "%lf", &newmatrix->ptr_matrix[row][col]) != 1) {
-				 puts("Data reading error");
+				 puts("The matrix is incorrect");
 				 free_matrix(newmatrix);
 				 fclose(off_fptr);
 				 return NULL;
@@ -81,19 +81,21 @@ Matrix* create_matrix(size_t rows, size_t cols) {
 		}
 		return newmatrix;
 	} else {
+		puts("The matrix is incorrect");
 		return NULL;
 	}
 }
 
 void free_matrix(Matrix* matrix) {
 	if (matrix == NULL) {
-		puts("The matrix does not exist");
-		return;
+		puts("The matrix doesn't exist");
 	} else {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 			free(matrix->ptr_matrix[row]);
 		}
-		free(matrix->ptr_matrix);
+		if (matrix->ptr_matrix != NULL) {
+			free(matrix->ptr_matrix);
+		}
 		free(matrix);
 	}
 }
@@ -101,36 +103,33 @@ void free_matrix(Matrix* matrix) {
 
 // Basic operations
 int get_rows(const Matrix* matrix, size_t* rows) {
-	if (matrix != NULL && matrix->ptr_matrix != NULL && matrix->number_of_rows != 0) {
+	if (matrix != NULL && rows != NULL) {
 		*rows = matrix->number_of_rows;
 		return 0;
 	} else {
+		puts("Memory allocation error");
 		return 1;
 	}
 }
 
 int get_cols(const Matrix* matrix, size_t* cols) {
-	if (matrix != NULL && matrix->ptr_matrix != NULL && matrix->number_of_cols != 0) {
-		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
-			if (matrix->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
-				return 1;
-			}
-		}
+	if (matrix != NULL && cols != NULL) {
 		*cols = matrix->number_of_cols;
 		return 0;
 	} else {
+		puts("Memory allocation error");
 		return 1;
 	}
 }
 
 int get_elem(const Matrix* matrix, size_t rows, size_t cols, double* val) {
 	if (matrix != NULL && matrix->ptr_matrix != NULL
-			&& matrix->number_of_rows >= rows
-			&& matrix->number_of_cols >= cols) {
+			&& matrix->number_of_rows > rows
+			&& matrix->number_of_cols > cols
+			&& val != NULL) {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 			if (matrix->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				puts("Memory allocation error");
 				return 1;
 			}
 		}
@@ -143,11 +142,11 @@ int get_elem(const Matrix* matrix, size_t rows, size_t cols, double* val) {
 
 int set_elem(Matrix* matrix, size_t rows, size_t cols, double val) {
 	if (matrix != NULL && matrix->ptr_matrix != NULL
-			&& matrix->number_of_rows >= rows
-			&& matrix->number_of_cols >= cols) {
+			&& matrix->number_of_rows > rows
+			&& matrix->number_of_cols > cols) {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 			if (matrix->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				puts("Memory allocation error");
 				return 1;
 			}
 		}
@@ -168,13 +167,7 @@ Matrix* mul_scalar(const Matrix* matrix, double val) {
 			}
 		}
 		Matrix* newmatrix = create_matrix(matrix->number_of_rows, matrix->number_of_cols);
-		if (newmatrix != NULL && newmatrix->ptr_matrix != NULL) {
-			for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
-				if (newmatrix->ptr_matrix[row] == NULL) {
-					puts("Error in the matrix entry");
-					return NULL;
-				}
-			}
+		if (newmatrix != NULL) {
 			for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 				for (size_t col = 0; col < matrix->number_of_cols; ++col) {
 					newmatrix->ptr_matrix[row][col] = matrix->ptr_matrix[row][col] * val;
@@ -197,17 +190,11 @@ Matrix* transp(const Matrix* matrix) {
 				return NULL;
 			}
 		}
-		Matrix* newmatrix = create_matrix(matrix->number_of_rows, matrix->number_of_cols);
-		if (newmatrix != NULL && newmatrix->ptr_matrix != NULL) {
-			for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
-				if (newmatrix->ptr_matrix[row] == NULL) {
-					puts("Error in the matrix entry");
-					return NULL;
-				}
-			}
+		Matrix* newmatrix = create_matrix(matrix->number_of_cols, matrix->number_of_rows);
+		if (newmatrix != NULL) {
 			for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 				for (size_t col = 0; col < matrix->number_of_cols; ++col) {
-					newmatrix->ptr_matrix[row][col] = matrix->ptr_matrix[col][row];
+					newmatrix->ptr_matrix[col][row] = matrix->ptr_matrix[row][col];
 				}
 			}
 			return newmatrix;
@@ -237,13 +224,7 @@ Matrix* sum(const Matrix* l, const Matrix* r) {
 			}
 		}
 		Matrix *newmatrix = create_matrix(l->number_of_rows, l->number_of_cols);
-		if (newmatrix != NULL && newmatrix->ptr_matrix != NULL) {
-                        for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
-                                if (newmatrix->ptr_matrix[row] == NULL) {
-                                        puts("Error in the matrix entry");
-                                        return NULL;
-                                }
-                        }
+		if (newmatrix != NULL) {
 			for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
 				for (size_t col = 0; col < newmatrix->number_of_cols; ++col) {
 					newmatrix->ptr_matrix[row][col] = l->ptr_matrix[row][col] + r->ptr_matrix[row][col];
@@ -276,13 +257,7 @@ Matrix* sub(const Matrix* l, const Matrix* r) {
 			}
 		}
 		Matrix *newmatrix = create_matrix(l->number_of_rows, l->number_of_cols);
-		if (newmatrix != NULL && newmatrix->ptr_matrix != NULL) {
-                        for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
-                                if (newmatrix->ptr_matrix[row] == NULL) {
-                                        puts("Error in the matrix entry");
-                                        return NULL;
-                                }
-                        }
+		if (newmatrix != NULL) {
 			for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
 				for (size_t col = 0; col < newmatrix->number_of_cols; ++col) {
 					newmatrix->ptr_matrix[row][col] = l->ptr_matrix[row][col] - r->ptr_matrix[row][col];
@@ -300,7 +275,7 @@ Matrix* sub(const Matrix* l, const Matrix* r) {
 Matrix* mul(const Matrix* l, const Matrix* r) {
 	if (l != NULL && l->ptr_matrix != NULL
 			&& r != NULL && r->ptr_matrix != NULL
-			&& l->number_of_rows == r->number_of_cols) {
+			&& l->number_of_cols == r->number_of_rows) {
 		for (size_t row = 0; row < l->number_of_rows; ++row) {
 			if (l->ptr_matrix[row] == NULL) {
 				puts("Error in the matrix entry");
@@ -314,17 +289,11 @@ Matrix* mul(const Matrix* l, const Matrix* r) {
 			}
 		}
 		Matrix *newmatrix = create_matrix(l->number_of_rows, r->number_of_cols);
-		if (newmatrix != NULL && newmatrix->ptr_matrix != NULL) {
-                        for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
-                                if (newmatrix->ptr_matrix[row] == NULL) {
-                                        puts("Error in the matrix entry");
-                                        return NULL;
-                                }
-                        }
+		if (newmatrix != NULL) {
 			for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
 				for (size_t col = 0; col < newmatrix->number_of_cols; ++col) {
-					for (size_t i = 0; i < r->number_of_rows; ++i) {
-						newmatrix->ptr_matrix[row][col] = l->ptr_matrix[row][i] * r->ptr_matrix[i][col];
+					for (size_t i = 0; i < l->number_of_cols; ++i) {
+						newmatrix->ptr_matrix[row][col] += l->ptr_matrix[row][i] * r->ptr_matrix[i][col];
 					}
 				}
 			}
@@ -334,5 +303,122 @@ Matrix* mul(const Matrix* l, const Matrix* r) {
 		}
 	} else {
 		return NULL;
+	}
+}
+
+//  Extra operations
+
+/*Matrix* matr(const Matrix* matrix, size_t n, size_t x) {
+	Matrix* newmatrix = create_matrix(n - 1, n - 1);
+	if (newmatrix != NULL) {
+		for (size_t i = 1; i < n -1; ++i) {
+			for (size_t j = 0, k = 0; j < n; ++j, ++k) {
+				if (j == k) {
+					--k;
+					continue;
+				}
+				newmatrix->ptr_matrix[i - 1][k] = matrix->ptr_matrix[i][j];
+			}
+		}
+		return newmatrix;
+	} else {
+		puts("Memory allocation error");
+		return NULL;
+	}
+}
+
+int det(const Matrix* matrix, double* val) {
+    if (matrix != NULL && matrix->ptr_matrix != NULL && val != NULL
+		    && matrix->number_of_rows == matrix->number_of_cols) {
+	    if (matrix->number_of_cols == 1) {
+		    *val = matrix->ptr_matrix[0][0];
+		    return 0;
+	    }
+	    if (matrix->number_of_cols == 2) {
+		    *val = (matrix->ptr_matrix[0][0] * matrix->ptr_matrix[1][1] - matrix->ptr_matrix[0][1] * matrix->ptr_matrix[1][0]);
+		    return 0;
+	    }
+	    size_t syc = 1;
+	    for (size_t row = 0; row < matrix->number_of_cols; ++row) {
+		    if (det(matrix, matrix->number_of_rows, row) == 0) {
+		    		double temp_res = *val;
+ 				*val += syc * matrix->ptr_matrix[0][row] * temp_res;
+				syc *= 1;
+			}
+	    }
+        return 0;
+    } else {
+	    if (matrix != NULL && matrix->ptr_matrix != NULL && val != NULL) {
+		    puts("Memory allocation error");
+	    } else {
+	    	puts("The matrix is incorrect");
+	    }
+	    return 1;
+    }
+} */
+
+void reduce_matrix(const Matrix* matrix, size_t del_row, size_t del_col, Matrix* newmatrix) {
+	size_t miss_rows = 0;
+	for (size_t i = 0; i < matrix->number_of_rows; ++i) {
+		if (i != del_row) {
+			size_t miss_cols = 0;
+			for (size_t j = 0; j < matrix->number_of_cols; ++j) {
+				if (del_col != j) {
+					newmatrix->ptr_matrix[i - miss_rows][j - miss_cols] = matrix->ptr_matrix[i][j];
+				} else {
+					++miss_cols;
+				}
+			}
+		} else {
+			++miss_rows;
+		}
+	}
+}
+
+
+int det(const Matrix* matrix, double* val) {
+	if (matrix != NULL && matrix->ptr_matrix != NULL && val != NULL
+			&& matrix->number_of_rows == matrix->number_of_cols) {
+		if (matrix->number_of_rows == 1) {
+			*val = matrix->ptr_matrix[0][0];
+			return 0;
+	    	} else if (matrix->number_of_rows == 2) {
+			*val = ((matrix->ptr_matrix[0][0] * matrix->ptr_matrix[1][1])
+				       	- (matrix->ptr_matrix[0][1] * matrix->ptr_matrix[1][0]));
+			return 0;
+		} else {
+			Matrix* newmatrix = create_matrix(matrix->number_of_rows - 1, matrix->number_of_cols - 1);
+			int sig_n = 1;
+			for (size_t col = 0; col < matrix->number_of_cols; ++col) {
+				reduce_matrix(matrix, 0, col, newmatrix);
+				if (det(newmatrix, val) == 0) {
+		    			double temp_res = *val;
+					*val += sig_n * matrix->ptr_matrix[0][col] * temp_res;
+					sig_n *= -1;
+				}
+			}
+			free_matrix(newmatrix);
+			return 0;
+		}
+	} else {
+		if (matrix != NULL && matrix->ptr_matrix != NULL && val != NULL) {
+			puts("Memory allocation error");
+		} else {
+			puts("The matrix is incorrect");
+		}
+		return 1;
+	}
+}
+
+void show_the_matrix(const Matrix* matrix) {
+	if (matrix != NULL && matrix->ptr_matrix != NULL) {
+		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
+	    		for (size_t col = 0; col < matrix->number_of_cols; ++col) {
+		    		printf("%lf ", matrix->ptr_matrix[row][col]);
+	    		}
+	    		puts("\n");
+    		}
+	} else {
+		puts("Memory allocation error");
 	}
 }
