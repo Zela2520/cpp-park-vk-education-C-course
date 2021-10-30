@@ -308,55 +308,6 @@ Matrix* mul(const Matrix* l, const Matrix* r) {
 
 //  Extra operations
 
-/*Matrix* matr(const Matrix* matrix, size_t n, size_t x) {
-	Matrix* newmatrix = create_matrix(n - 1, n - 1);
-	if (newmatrix != NULL) {
-		for (size_t i = 1; i < n -1; ++i) {
-			for (size_t j = 0, k = 0; j < n; ++j, ++k) {
-				if (j == k) {
-					--k;
-					continue;
-				}
-				newmatrix->ptr_matrix[i - 1][k] = matrix->ptr_matrix[i][j];
-			}
-		}
-		return newmatrix;
-	} else {
-		puts("Memory allocation error");
-		return NULL;
-	}
-}
-
-int det(const Matrix* matrix, double* val) {
-    if (matrix != NULL && matrix->ptr_matrix != NULL && val != NULL
-		    && matrix->number_of_rows == matrix->number_of_cols) {
-	    if (matrix->number_of_cols == 1) {
-		    *val = matrix->ptr_matrix[0][0];
-		    return 0;
-	    }
-	    if (matrix->number_of_cols == 2) {
-		    *val = (matrix->ptr_matrix[0][0] * matrix->ptr_matrix[1][1] - matrix->ptr_matrix[0][1] * matrix->ptr_matrix[1][0]);
-		    return 0;
-	    }
-	    size_t syc = 1;
-	    for (size_t row = 0; row < matrix->number_of_cols; ++row) {
-		    if (det(matrix, matrix->number_of_rows, row) == 0) {
-		    		double temp_res = *val;
- 				*val += syc * matrix->ptr_matrix[0][row] * temp_res;
-				syc *= 1;
-			}
-	    }
-        return 0;
-    } else {
-	    if (matrix != NULL && matrix->ptr_matrix != NULL && val != NULL) {
-		    puts("Memory allocation error");
-	    } else {
-	    	puts("The matrix is incorrect");
-	    }
-	    return 1;
-    }
-} */
-
 void reduce_matrix(const Matrix* matrix, size_t del_row, size_t del_col, Matrix* newmatrix) {
 	size_t miss_rows = 0;
 	for (size_t i = 0; i < matrix->number_of_rows; ++i) {
