@@ -34,5 +34,7 @@ int det(const Matrix* matrix, double* val);
 Matrix* adj(const Matrix* matrix);
 Matrix* inv(const Matrix* matrix);
 void show_the_matrix(const Matrix* matrix);
+Matrix* make_minor(const Matrix* matrix, size_t del_row, size_t del_col, Matrix* newmatrix);
+void reduce_matrix(const Matrix* matrix, size_t del_row, size_t del_col, Matrix* newmatrix);
 
 #endif  // PROJECT_INCLUDE_MATRIX_H_

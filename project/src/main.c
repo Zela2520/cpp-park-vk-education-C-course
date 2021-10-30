@@ -75,6 +75,21 @@ int main(void) {
 	    puts("Memory allocation error");
     }
 
+    double determination = 0;
+    if (det(first_matrix, &determination) == 0) {
+	    printf("%lf", determination);
+    } else {
+	    puts("Memory allocation error");
+    }
+
+    Matrix *adj_matrix = adj(first_matrix);
+    if (adj_matrix != NULL) {
+    	show_the_matrix(adj_matrix);
+    } else {
+	    puts("Memory allocation error");
+    }
+
+
     // Освобождаем память
     if (first_matrix != NULL) {
     	free_matrix(first_matrix);
@@ -98,8 +113,10 @@ int main(void) {
     	free_matrix(mul_matrix);
     }
 
-    det(NULL, NULL);
-    adj(NULL);
+    if (adj_matrix != NULL) {
+    	free_matrix(adj_matrix);
+    }
+
     inv(NULL);
 
     return 0;

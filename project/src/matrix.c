@@ -3,6 +3,20 @@
 #include "matrix.h"
 
 // Init/release operations
+void free_matrix(Matrix* matrix) {
+	if (matrix == NULL) {
+		puts("The matrix doesn't exist");
+	} else {
+		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
+			free(matrix->ptr_matrix[row]);
+		}
+		if (matrix->ptr_matrix != NULL) {
+			free(matrix->ptr_matrix);
+		}
+		free(matrix);
+	}
+}
+
 Matrix* create_matrix_from_file(const char* path_file) {
 	FILE *off_fptr = fopen(path_file, "r");
 	if (off_fptr == NULL) {
@@ -85,21 +99,6 @@ Matrix* create_matrix(size_t rows, size_t cols) {
 		return NULL;
 	}
 }
-
-void free_matrix(Matrix* matrix) {
-	if (matrix == NULL) {
-		puts("The matrix doesn't exist");
-	} else {
-		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
-			free(matrix->ptr_matrix[row]);
-		}
-		if (matrix->ptr_matrix != NULL) {
-			free(matrix->ptr_matrix);
-		}
-		free(matrix);
-	}
-}
-
 
 // Basic operations
 int get_rows(const Matrix* matrix, size_t* rows) {
@@ -363,17 +362,70 @@ int det(const Matrix* matrix, double* val) {
 	}
 }
 
+Matrix* make_minor(const Matrix* matrix, size_t del_row, size_t del_col, Matrix* newmatrix) {
+	size_t miss_rows = 0;
+	for (size_t i = 0; i < matrix->number_of_rows; ++i) {
+		if (i != del_row) {
+			size_t miss_cols = 0;
+			for (size_t j = 0; j < matrix->number_of_cols; ++j) {
+				if (del_col != j) {
+					newmatrix->ptr_matrix[i - miss_rows][j - miss_cols] = matrix->ptr_matrix[i][j];
+				} else {
+					++miss_cols;
+				}
+			}
+		} else {
+			++miss_rows;
+		}
+	}
+	return newmatrix;
+}
+
+
 Matrix* adj(const Matrix* matrix) {
-	if ((matrix != NULL) && (matrix->ptr_matrix != NULL)) {
-		return (Matrix*)1;
+	if (matrix != NULL && matrix->ptr_matrix != NULL
+			&& matrix->number_of_rows == matrix->number_of_cols) {
+		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
+			if (matrix->ptr_matrix[row] == NULL) {
+				puts("Error in the matrix entry");
+				return NULL;
+			}
+		}
+		Matrix* transpon_matrix = transp(matrix);
+		Matrix* newmatrix = create_matrix(matrix->number_of_rows, matrix->number_of_cols);
+		Matrix* minor_matrix = create_matrix(matrix->number_of_rows - 1, matrix->number_of_cols - 1);
+		double minor_res = 0;
+		for (size_t i = 0; i < transpon_matrix->number_of_rows; ++i) {
+			for (size_t j = 0; j < transpon_matrix->number_of_cols; ++j) {
+				if(det(make_minor(transpon_matrix, i, j, minor_matrix), &minor_res) == 0) {
+					int sig_n = 1;
+					if ((i + j) % 2 == 1) {
+						sig_n = -1;
+					}
+					newmatrix->ptr_matrix[i][j] = minor_res * sig_n;
+				} else {
+					puts("The descriminant does not exist");
+					return NULL;
+				}
+			}
+		}
+		free_matrix(transpon_matrix);
+		free_matrix(minor_matrix);
+		return newmatrix;
 	} else {
+		if (matrix != NULL && matrix->ptr_matrix != NULL) {
+			puts("Memory allocation error");
+		} else {
+			puts("The matrix is incorrect");
+		}
 		return NULL;
 	}
 }
 
 Matrix* inv(const Matrix* matrix) {
 	if ((matrix != NULL) && (matrix->ptr_matrix != NULL)) {
-		return (Matrix*)1;
+		Matrix* bum = create_matrix(matrix->number_of_rows, matrix->number_of_cols);
+		return bum;
 	} else {
 		return NULL;
 	}
