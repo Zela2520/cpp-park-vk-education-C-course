@@ -4,9 +4,7 @@
 
 // Init/release operations
 void free_matrix(Matrix* matrix) {
-	if (matrix == NULL) {
-		puts("The matrix doesn't exist");
-	} else {
+	if (matrix != NULL) {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 			free(matrix->ptr_matrix[row]);
 		}
@@ -20,19 +18,19 @@ void free_matrix(Matrix* matrix) {
 Matrix* create_matrix_from_file(const char* path_file) {
 	FILE *off_fptr = fopen(path_file, "r");
 	if (off_fptr == NULL) {
-		puts("There is no access to the file");
+		// There is no access to the file
 		return NULL;
 	}
 	// выделяем память для хранения матрицы
 	Matrix *newmatrix = calloc(1, sizeof(Matrix));
 	if (newmatrix == NULL) {
-		puts("Memory allocation error");
+		// Memory allocation error
 		fclose(off_fptr);
 		return NULL;
 	}
 	// читаем указан ли размер матрицы в файле, проверяем на корректность данные
 	if (fscanf(off_fptr, "%zu%zu", &newmatrix->number_of_rows, &newmatrix->number_of_cols) != 2) {
-		puts("The matrix is incorrect");
+		// The matrix is incorrect
 		free(newmatrix);
 		fclose(off_fptr);
 		return NULL;
@@ -40,7 +38,7 @@ Matrix* create_matrix_from_file(const char* path_file) {
 	// выделяем память для массива указателей количеством number_of_rows
 	newmatrix->ptr_matrix = calloc(newmatrix->number_of_rows, sizeof(double*));
 	if (newmatrix->ptr_matrix == NULL) {
-		puts("Memory allocation error");
+		// Memory allocation error
 		free(newmatrix);
 		fclose(off_fptr);
 		return NULL;
@@ -49,7 +47,7 @@ Matrix* create_matrix_from_file(const char* path_file) {
 		// выделяем память для переменных, хранящихся в каждом из массивов
 		newmatrix->ptr_matrix[row] = calloc(newmatrix->number_of_cols, sizeof(double));
 		if (newmatrix->ptr_matrix[row] == NULL) {
-			puts("Memory allocation error");
+			// Memory allocation error
 			free_matrix(newmatrix);
 			fclose(off_fptr);
 			return NULL;
@@ -59,7 +57,7 @@ Matrix* create_matrix_from_file(const char* path_file) {
 	for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
 		for (size_t col = 0; col < newmatrix->number_of_cols; ++col) {
 			if (fscanf(off_fptr, "%lf", &newmatrix->ptr_matrix[row][col]) != 1) {
-				 puts("The matrix is incorrect");
+				 // The matrix is incorrect
 				 free_matrix(newmatrix);
 				 fclose(off_fptr);
 				 return NULL;
@@ -74,28 +72,28 @@ Matrix* create_matrix(size_t rows, size_t cols) {
 	if (rows > 0 && cols > 0) {
 		Matrix *newmatrix = calloc(1, sizeof(Matrix));
 		if (newmatrix == NULL) {
-			puts("Memory allocation error");
+			// Memory allocation error
 			return NULL;
 		}
 		newmatrix->number_of_rows = rows;
 		newmatrix->number_of_cols = cols;
 		newmatrix->ptr_matrix = calloc(newmatrix->number_of_rows, sizeof(double*));
 		if (newmatrix->ptr_matrix == NULL) {
-			puts("Memory allocation error");
+			// Memory allocation error
 			free(newmatrix);
 			return NULL;
 		}
 		for (size_t row = 0; row < newmatrix->number_of_rows; ++row) {
 			newmatrix->ptr_matrix[row] = calloc(newmatrix->number_of_cols, sizeof(double));
 			if (newmatrix->ptr_matrix[row] == NULL) {
-				puts("Memory allocation error");
+				// Memory allocation error
 				free_matrix(newmatrix);
 				return NULL;
 			}
 		}
 		return newmatrix;
 	} else {
-		puts("The matrix is incorrect");
+		// The matrix is incorrect
 		return NULL;
 	}
 }
@@ -106,7 +104,7 @@ int get_rows(const Matrix* matrix, size_t* rows) {
 		*rows = matrix->number_of_rows;
 		return 0;
 	} else {
-		puts("Memory allocation error");
+		// Memory allocation error
 		return 1;
 	}
 }
@@ -116,7 +114,7 @@ int get_cols(const Matrix* matrix, size_t* cols) {
 		*cols = matrix->number_of_cols;
 		return 0;
 	} else {
-		puts("Memory allocation error");
+		// Memory allocation error
 		return 1;
 	}
 }
@@ -128,7 +126,7 @@ int get_elem(const Matrix* matrix, size_t rows, size_t cols, double* val) {
 			&& val != NULL) {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 			if (matrix->ptr_matrix[row] == NULL) {
-				puts("Memory allocation error");
+				// Memory allocation error;
 				return 1;
 			}
 		}
@@ -145,7 +143,7 @@ int set_elem(Matrix* matrix, size_t rows, size_t cols, double val) {
 			&& matrix->number_of_cols > cols) {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 			if (matrix->ptr_matrix[row] == NULL) {
-				puts("Memory allocation error");
+				// Memory allocation error
 				return 1;
 			}
 		}
@@ -161,7 +159,7 @@ Matrix* mul_scalar(const Matrix* matrix, double val) {
 	if (matrix != NULL && matrix->ptr_matrix != NULL) {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 			if (matrix->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				// Error in the matrix entry
 				return NULL;
 			}
 		}
@@ -185,7 +183,7 @@ Matrix* transp(const Matrix* matrix) {
 	if (matrix != NULL && matrix->ptr_matrix != NULL) {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 			if (matrix->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				// Error in the matrix entry
 				return NULL;
 			}
 		}
@@ -212,13 +210,13 @@ Matrix* sum(const Matrix* l, const Matrix* r) {
 			&& l->number_of_cols == r->number_of_cols) {
 		for (size_t row = 0; row < l->number_of_rows; ++row) {
 			if (l->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				// Error in the matrix entry
 				return NULL;
 			}
 		}
 		for (size_t row = 0; row < r->number_of_rows; ++row) {
 			if (r->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				// Error in the matrix entry
 				return NULL;
 			}
 		}
@@ -245,13 +243,13 @@ Matrix* sub(const Matrix* l, const Matrix* r) {
 			&& l->number_of_cols == r->number_of_cols) {
 		for (size_t row = 0; row < l->number_of_rows; ++row) {
 			if (l->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				// Error in the matrix entry
 				return NULL;
 			}
 		}
 		for (size_t row = 0; row < r->number_of_rows; ++row) {
 			if (r->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				// Error in the matrix entry
 				return NULL;
 			}
 		}
@@ -277,13 +275,13 @@ Matrix* mul(const Matrix* l, const Matrix* r) {
 			&& l->number_of_cols == r->number_of_rows) {
 		for (size_t row = 0; row < l->number_of_rows; ++row) {
 			if (l->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				// Error in the matrix entry
 				return NULL;
 			}
 		}
 		for (size_t row = 0; row < r->number_of_rows; ++row) {
 			if (r->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				// Error in the matrix entry
 				return NULL;
 			}
 		}
@@ -353,11 +351,6 @@ int det(const Matrix* matrix, double* val) {
 			return 0;
 		}
 	} else {
-		if (matrix != NULL && matrix->ptr_matrix != NULL && val != NULL) {
-			puts("Memory allocation error");
-		} else {
-			puts("The matrix is incorrect");
-		}
 		return 1;
 	}
 }
@@ -387,7 +380,7 @@ Matrix* adj(const Matrix* matrix) {
 			&& matrix->number_of_rows == matrix->number_of_cols) {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
 			if (matrix->ptr_matrix[row] == NULL) {
-				puts("Error in the matrix entry");
+				// Error in the matrix entry
 				return NULL;
 			}
 		}
@@ -404,7 +397,10 @@ Matrix* adj(const Matrix* matrix) {
 					}
 					newmatrix->ptr_matrix[i][j] = minor_res * sig_n;
 				} else {
-					puts("The descriminant does not exist");
+					// The descriminant does not exist
+					free_matrix(transpon_matrix);
+					free_matrix(minor_matrix);
+					free_matrix(newmatrix);
 					return NULL;
 				}
 			}
@@ -413,19 +409,78 @@ Matrix* adj(const Matrix* matrix) {
 		free_matrix(minor_matrix);
 		return newmatrix;
 	} else {
-		if (matrix != NULL && matrix->ptr_matrix != NULL) {
-			puts("Memory allocation error");
-		} else {
-			puts("The matrix is incorrect");
-		}
 		return NULL;
 	}
 }
 
 Matrix* inv(const Matrix* matrix) {
-	if ((matrix != NULL) && (matrix->ptr_matrix != NULL)) {
-		Matrix* bum = create_matrix(matrix->number_of_rows, matrix->number_of_cols);
-		return bum;
+       	if (matrix != NULL && matrix->ptr_matrix != NULL
+			&& matrix->number_of_rows == matrix->number_of_cols) {
+		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
+			if (matrix->ptr_matrix[row] == NULL) {
+				// Error in the matrix entry
+				return NULL;
+			}
+		}
+		double det_matrix = 0;
+		if (det(matrix, &det_matrix) == 0) {
+			if (det_matrix == 0) {
+				return NULL;
+			} else {
+				Matrix* adj_matrix = adj(matrix);
+				if (adj_matrix == NULL) {
+					return NULL;
+				}
+				Matrix* newmatrix = mul_scalar(adj_matrix, 1/det_matrix);
+				if (newmatrix == NULL) {
+					free_matrix(adj_matrix);
+					return NULL;
+				}
+				Matrix* unic_matrix = create_matrix(newmatrix->number_of_rows, newmatrix->number_of_cols);
+				if (unic_matrix == NULL) {
+					free_matrix(adj_matrix);
+					free_matrix(newmatrix);
+					return NULL;
+				}
+				for (size_t i = 0; i < unic_matrix->number_of_rows; ++i) {
+					for (size_t j = 0; j < unic_matrix->number_of_cols; ++j) {
+						if (i == j) {
+							unic_matrix->ptr_matrix[i][j] = 1;
+						} else {
+							unic_matrix->ptr_matrix[i][j] = 0;
+						}
+					}
+				}
+				if (matrix->number_of_cols != newmatrix->number_of_rows) {
+					free_matrix(adj_matrix);
+					free_matrix(unic_matrix);
+					return NULL;
+				}
+				Matrix* comparison_matrix = mul(matrix, newmatrix);
+				if (comparison_matrix == NULL) {
+					free_matrix(unic_matrix);
+					free_matrix(adj_matrix);
+					return NULL;
+				}
+				for (size_t i = 0; i < comparison_matrix->number_of_rows; ++i) {
+					for (size_t j = 0; j < comparison_matrix->number_of_cols; ++j) {
+						if (comparison_matrix->ptr_matrix[i][j] != unic_matrix->ptr_matrix[i][j]) {
+							free_matrix(comparison_matrix);
+							free_matrix(adj_matrix);
+							free_matrix(unic_matrix);
+							return NULL;
+						}
+					}
+				}
+				free_matrix(comparison_matrix);
+				free_matrix(adj_matrix);
+				free_matrix(unic_matrix);
+				return newmatrix;
+			}
+		} else {
+			// The matrix is incorrect
+			return NULL;
+		}
 	} else {
 		return NULL;
 	}
@@ -440,7 +495,5 @@ void show_the_matrix(const Matrix* matrix) {
 	    		}
 	    		puts("\n");
     		}
-	} else {
-		puts("Memory allocation error");
 	}
 }

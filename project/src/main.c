@@ -89,6 +89,13 @@ int main(void) {
 	    puts("Memory allocation error");
     }
 
+    Matrix *inv_matrix = inv(first_matrix);
+    if (inv_matrix != NULL) {
+    	show_the_matrix(inv_matrix);
+    } else {
+	    puts("Memory allocation error");
+    }
+
 
     // Освобождаем память
     if (first_matrix != NULL) {
@@ -117,7 +124,9 @@ int main(void) {
     	free_matrix(adj_matrix);
     }
 
-    inv(NULL);
+    if (inv_matrix != NULL) {
+    	free_matrix(inv_matrix);
+    }
 
     return 0;
 }
