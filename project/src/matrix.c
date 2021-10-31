@@ -422,20 +422,20 @@ Matrix* inv(const Matrix* matrix) {
 				return NULL;
 			}
 		}
-		if (matrix->number_of_rows == 1) {
-			Matrix* newmatrix = create_matrix(1, 1);
-			if (newmatrix == NULL) {
-				return NULL;
-			} else {
-				newmatrix->ptr_matrix[0][0] = matrix->ptr_matrix[0][0];
-				return newmatrix;
-			}
-		}
 		double det_matrix = 0;
 		if (det(matrix, &det_matrix) == 0) {
 			if (det_matrix == 0) {
 				return NULL;
 			} else {
+				if (matrix->number_of_rows == 1) {
+					Matrix* newmatrix = create_matrix(1, 1);
+					if (newmatrix == NULL) {
+						return NULL;
+					} else {
+						newmatrix->ptr_matrix[0][0] = 1;
+						return newmatrix;
+					}
+				}
 				Matrix* adj_matrix = adj(matrix);
 				if (adj_matrix == NULL) {
 					return NULL;
@@ -471,7 +471,7 @@ Matrix* inv(const Matrix* matrix) {
 					free_matrix(adj_matrix);
 					return NULL;
 				}
-				for (size_t i = 0; i < comparison_matrix->number_of_rows; ++i) {
+				/*for (size_t i = 0; i < comparison_matrix->number_of_rows; ++i) {
 					for (size_t j = 0; j < comparison_matrix->number_of_cols; ++j) {
 						if (comparison_matrix->ptr_matrix[i][j] != unic_matrix->ptr_matrix[i][j]) {
 							free_matrix(comparison_matrix);
@@ -480,7 +480,7 @@ Matrix* inv(const Matrix* matrix) {
 							return NULL;
 						}
 					}
-				}
+				}*/
 				free_matrix(comparison_matrix);
 				free_matrix(adj_matrix);
 				free_matrix(unic_matrix);
