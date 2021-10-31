@@ -465,13 +465,13 @@ Matrix* inv(const Matrix* matrix) {
 					free_matrix(unic_matrix);
 					return NULL;
 				}
-				Matrix* comparison_matrix = mul(matrix, newmatrix);
+				/*Matrix* comparison_matrix = mul(matrix, newmatrix);
 				if (comparison_matrix == NULL) {
 					free_matrix(unic_matrix);
 					free_matrix(adj_matrix);
 					return NULL;
 				}
-				/*for (size_t i = 0; i < comparison_matrix->number_of_rows; ++i) {
+				for (size_t i = 0; i < comparison_matrix->number_of_rows; ++i) {
 					for (size_t j = 0; j < comparison_matrix->number_of_cols; ++j) {
 						if (comparison_matrix->ptr_matrix[i][j] != unic_matrix->ptr_matrix[i][j]) {
 							free_matrix(comparison_matrix);
@@ -481,7 +481,7 @@ Matrix* inv(const Matrix* matrix) {
 						}
 					}
 				}*/
-				free_matrix(comparison_matrix);
+				// free_matrix(comparison_matrix);
 				free_matrix(adj_matrix);
 				free_matrix(unic_matrix);
 				return newmatrix;
