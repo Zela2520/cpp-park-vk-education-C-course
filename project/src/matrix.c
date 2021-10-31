@@ -422,6 +422,15 @@ Matrix* inv(const Matrix* matrix) {
 				return NULL;
 			}
 		}
+		if (matrix->number_of_rows == 1) {
+			Matrix* newmatrix = create_matrix(1, 1);
+			if (newmatrix == NULL) {
+				return NULL;
+			} else {
+				newmatrix->ptr_matrix[0][0] = matrix->ptr_matrix[0][0];
+				return newmatrix;
+			}
+		}
 		double det_matrix = 0;
 		if (det(matrix, &det_matrix) == 0) {
 			if (det_matrix == 0) {
@@ -431,7 +440,7 @@ Matrix* inv(const Matrix* matrix) {
 				if (adj_matrix == NULL) {
 					return NULL;
 				}
-				Matrix* newmatrix = mul_scalar(adj_matrix, 1/det_matrix);
+				Matrix* newmatrix = mul_scalar(adj_matrix, (1/det_matrix));
 				if (newmatrix == NULL) {
 					free_matrix(adj_matrix);
 					return NULL;
