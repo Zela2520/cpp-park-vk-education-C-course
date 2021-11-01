@@ -1,10 +1,13 @@
-#ifndef _MATRIX_H_
-#define _MATRIX_H_
+#ifndef PROJECT_INCLUDE_MATRIX_H_
+#define PROJECT_INCLUDE_MATRIX_H_
 
 #include <stddef.h>
 
 
-typedef struct Matrix {
+typedef struct {
+	size_t number_of_rows;
+	size_t number_of_cols;
+	double **ptr_matrix;
 } Matrix;
 
 // Init/release operations
@@ -15,10 +18,10 @@ void free_matrix(Matrix* matrix);
 // Basic operations
 int get_rows(const Matrix* matrix, size_t* rows);
 int get_cols(const Matrix* matrix, size_t* cols);
-int get_elem(const Matrix* matrix, size_t row, size_t col, double* val);
-int set_elem(Matrix* matrix, size_t row, size_t col, double val);
+int get_elem(const Matrix* matrix, size_t rows, size_t cols, double* val);
+int set_elem(Matrix* matrix, size_t rows, size_t cols, double val);
 
-//Math operations
+// Math operations
 Matrix* mul_scalar(const Matrix* matrix, double val);
 Matrix* transp(const Matrix* matrix);
 
@@ -30,6 +33,8 @@ Matrix* mul(const Matrix* l, const Matrix* r);
 int det(const Matrix* matrix, double* val);
 Matrix* adj(const Matrix* matrix);
 Matrix* inv(const Matrix* matrix);
+void show_the_matrix(const Matrix* matrix);
+Matrix* make_minor(const Matrix* matrix, size_t del_row, size_t del_col, Matrix* newmatrix);
+void reduce_matrix(const Matrix* matrix, size_t del_row, size_t del_col, Matrix* newmatrix);
 
-
-#endif //_MATRIX_H_
+#endif  // PROJECT_INCLUDE_MATRIX_H_
