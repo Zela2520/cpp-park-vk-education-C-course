@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void show_numbers_in_range(int begin, int end) {
+void print_numbers_in_range(int begin, int end) {
 	if (begin == end) {
 		printf("%d", begin);
 		return;
@@ -11,5 +11,5 @@ void show_numbers_in_range(int begin, int end) {
 	} else {
 		--begin;
 	}
-	show_numbers_in_range(begin, end);
+	print_numbers_in_range(begin, end);
 }

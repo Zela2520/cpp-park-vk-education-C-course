@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "prime.h"
 #include "utils.h"
-#include "show_range.h"
+#include "print_range.h"
 
 #define ERR_ARGS_COUNT (-1)
 #define ERR_WRONG_FLG (-2)
@@ -48,7 +48,7 @@ int main(int argc, const char** argv) {
         }
 	case TST_DISPLAY_IMPL: {
 	    int last_num = atoi(data);
-	    show_numbers_in_range(1, last_num);
+	    print_numbers_in_range(1, last_num);
 	    break;
 	 }
 

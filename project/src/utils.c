@@ -8,7 +8,7 @@ size_t timer_from(int from) {
 		printf("%d ", i);
     	}
     	if (ticks_count != 0) {
-	    	printf("0\n");
+	    	puts("0");
 		++ticks_count;
     	}
     	return ticks_count;
