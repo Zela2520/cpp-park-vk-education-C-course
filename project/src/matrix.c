@@ -414,6 +414,7 @@ Matrix* adj(const Matrix* matrix) {
 }
 
 Matrix* inv(const Matrix* matrix) {
+	show_the_matrix(matrix);
        	if (matrix != NULL && matrix->ptr_matrix != NULL
 			&& matrix->number_of_rows == matrix->number_of_cols) {
 		for (size_t row = 0; row < matrix->number_of_rows; ++row) {
@@ -432,7 +433,7 @@ Matrix* inv(const Matrix* matrix) {
 					if (newmatrix == NULL) {
 						return NULL;
 					} else {
-						newmatrix->ptr_matrix[0][0] = 1;
+						newmatrix->ptr_matrix[0][0] = 1 / matrix->ptr_matrix[0][0];
 						return newmatrix;
 					}
 				}
