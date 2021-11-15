@@ -2,12 +2,12 @@
 #define PROJECT_INCLUDE_EML_PARSER_H_
 
 #include <stddef.h>
-#include "object.h"
+#include "header.h"
 
 typedef struct {
-    Object* from;
-    Object* to;
-    Object* date;
+    Header* from;
+    Header* to;
+    Header* date;
     size_t parts;
 } Result;
 

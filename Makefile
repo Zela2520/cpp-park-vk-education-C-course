@@ -7,7 +7,7 @@ HDRS = \
 SRCS = \
 	   project/src/main.c \
 	   project/src/eml_parser.c \
-       project/src/object.c
+	   project/src/header.c
 
 
 .PHONY: all check build test memtest rebuild clean
