@@ -5,9 +5,9 @@
 
 namespace prep {
 class Matrix {
-    size_t rows;
-    size_t cols;
-    std::vector<std::vector<double>> matrix;
+  size_t rows;
+  size_t cols;
+  std::vector<std::vector<double>> matrix;
 
  public:
   explicit Matrix(size_t rows = 0, size_t cols = 0);
@@ -35,6 +35,10 @@ class Matrix {
   Matrix operator*(double val, const Matrix& matrix);
   friend
   std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
+  friend
+  void fill_minor(const Matrix& matrix, size_t del_row, size_t del_col, Matrix* newmatrix);
+  friend
+  Matrix make_minor(const Matrix& matrix, size_t del_row, size_t del_col, Matrix* newmatrix);
 
   Matrix transp() const;
   double det() const;
@@ -44,4 +48,6 @@ class Matrix {
 
 Matrix operator*(double val, const Matrix& matrix);
 std::ostream& operator<<(std::ostream& os, const Matrix& matrix);
+void fill_minor(const Matrix& matrix, size_t del_row, size_t del_col, Matrix* newmatrix);
+Matrix make_minor(const Matrix& matrix, size_t del_row, size_t del_col, Matrix* newmatrix);
 }  // namespace prep
