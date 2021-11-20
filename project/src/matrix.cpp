@@ -251,7 +251,7 @@ namespace prep {
 				if ((i + j) % 2 == 1) {
 					sig_n = -1;
 				}
-				newmatrix.matrix[i][j] = minor_res * sig_n;
+				newmatrix.matrix[i][j] = std::trunc((minor_res * sig_n) * 1e7) / 1e7;
 			}
 		}
         return newmatrix;
