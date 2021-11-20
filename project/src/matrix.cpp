@@ -12,6 +12,7 @@ namespace prep {
     rows(rows),
     cols(cols) {
         this->matrix.assign(this->rows, std::vector<double>(this->cols, 0));
+        this->adj_matrix.assign(this->rows, std::vector<double>(this->cols, 0));
     }
 
     Matrix::Matrix(std::istream &is) :
@@ -24,6 +25,7 @@ namespace prep {
             throw InvalidMatrixStream();
         }
         this->matrix.assign(this->rows, std::vector<double>(this->cols, 0));
+        this->adj_matrix.assign(this->rows, std::vector<double>(this->cols, 0));
         for (size_t i = 0; i < this-> rows; i++) {
             for (size_t j = 0; j < this->cols; j++) {
                 if (!(is >> matrix[i][j])) {
@@ -251,6 +253,7 @@ namespace prep {
 				if ((i + j) % 2 == 1) {
 					sig_n = -1;
 				}
+                newmatrix.adj_matrix[i][j] = minor_res * sig_n;
 				newmatrix.matrix[i][j] = std::trunc((minor_res * sig_n) * 1e7) / 1e7;
 			}
 		}
@@ -271,7 +274,12 @@ namespace prep {
 			return newmatrix;
 		}
 		const Matrix& adj_matrix = adj();
-		Matrix newmatrix = (1/det_matrix) * adj_matrix;
+		Matrix newmatrix(this->rows, this->cols);
+        for (size_t i = 0; i < newmatrix.rows; i++) {
+            for (size_t j = 0; j < newmatrix.cols; j++) {
+                newmatrix.matrix[i][j] =  std::trunc((adj_matrix.adj_matrix[i][j] / det_matrix) * 1e7) / 1e7;
+            }
+        }
 	    return newmatrix;
     }
 }  // namespace prep
