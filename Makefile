@@ -2,7 +2,10 @@ TST_TARGET = ./tests.out
 VALGRIND_LOG = "valgrind.log"
 
 HDRS = \
-		src/list.hpp
+		src/list.hpp \
+		src/impl_list.hpp \
+		src/iterator.hpp \
+		src/const_iterator.hpp
 
 TST_SRCS = \
            test/test.cpp

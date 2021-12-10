@@ -1,45 +1,82 @@
 #pragma once // NOLINT
 #include <iterator>
-
+#include <exception>
 
 namespace task {
 
 
 template<class T>
 class list {
+    template <typename T>
+    class Node {
+	    public:
+		Node(const T& data = T(), Node* next = nullptr, Node* prev = nullptr) :
+			m_data(data),
+			m_next(next),
+			m_prev(prev)
+	    {}
+		T m_data;
+		Node* m_next;
+		Node* m_prev;
+	};
+	Node<T>* head;
+	Node<T>* tail;
+	size_t list_size;
 
-public:
+ public:
     class iterator {
-    public:
-        using difference_type = ptrdiff_t;
-        using value_type = T;
-        using pointer = T*;
-        using reference = T&;
-        using iterator_category = std::bidirectional_iterator_tag;
+	    public:
+		    using difference_type = ptrdiff_t;
+		    using value_type = T;
+		    using pointer = T*;
+		    using reference = T&;
+		    using iterator_category = std::bidirectional_iterator_tag;
 
-        iterator();
-        iterator(const iterator&);
-        iterator& operator=(const iterator&);
+	iterator();
+        iterator(Node<T>* node_ptr);
+        iterator(const iterator& other_iterator);
+        iterator& operator=(const iterator& other_iterator);
 
         iterator& operator++();
         iterator operator++(int);
         reference operator*() const;
         pointer operator->() const;
         iterator& operator--();
-        iterator operator--(int);
+	iterator operator--(int);
 
         bool operator==(iterator other) const;
         bool operator!=(iterator other) const;
 
-        // Your code goes here?..
-
-    private:
-        // Your code hoes here...
+     private:
+	Node<T>* user_iterator;
     };
+    friend class iterator;
 
     class const_iterator {
-        // Your code goes here...
+	    public:
+		    using difference_type = ptrdiff_t;
+		    using value_type = T;
+		    using const_pointer = const T*;
+		    using const_reference = const T&;
+		    using iterator_category = std::bidirectional_iterator_tag;
+
+        const_iterator();
+        const_iterator(Node<T>* node_ptr);
+        const_iterator(const const_iterator& other_iterator);
+        const_iterator& operator=(const const_iterator& other_iterator);
+        const_iterator& operator++();
+        const_iterator operator++(int);
+        const_reference operator*() const;
+        const_pointer operator->() const;
+        const_iterator& operator--();
+        const_iterator operator--(int);
+
+        bool operator==(const_iterator other) const;
+        bool operator!=(const_iterator other) const;
+	    private:
+		Node<T>* user_const_iterator;
     };
+    friend class const_iterator;
 
     using reverse_iterator = std::reverse_iterator<iterator>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
@@ -102,14 +139,10 @@ public:
     void unique();
     void sort();
 
-    // Your code goes here?..
-
-private:
-
-    // Your code goes here...
-
+    // iterator search(const T& data);
 };
 
 // Your template function definitions may go here...
+
 
 }  // namespace task
