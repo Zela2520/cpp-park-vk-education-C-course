@@ -7,7 +7,7 @@ namespace task {
 
 template<class T>
 class list {
-    template <typename T>
+    template <typename>
     class Node {
 	    public:
 		Node(const T& data = T(), Node* next = nullptr, Node* prev = nullptr) :
@@ -59,10 +59,12 @@ class list {
 		    using const_pointer = const T*;
 		    using const_reference = const T&;
 		    using iterator_category = std::bidirectional_iterator_tag;
+            using reverse_iterator = std::reverse_iterator<iterator>;
 
         const_iterator();
         const_iterator(Node<T>* node_ptr);
         const_iterator(const const_iterator& other_iterator);
+        const_iterator(const iterator& other_iterator);
         const_iterator& operator=(const const_iterator& other_iterator);
         const_iterator& operator++();
         const_iterator operator++(int);
@@ -73,6 +75,7 @@ class list {
 
         bool operator==(const_iterator other) const;
         bool operator!=(const_iterator other) const;
+
 	    private:
 		Node<T>* user_const_iterator;
     };

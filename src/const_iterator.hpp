@@ -13,6 +13,12 @@ task::list<T>::const_iterator::const_iterator
 }
 
 template<typename T>
+task::list<T>::const_iterator::const_iterator
+(const iterator& other_iterator) {
+    this->user_const_iterator = other_iterator.user_iterator;
+}
+
+template<typename T>
 task::list<T>::const_iterator::const_iterator(Node<T>* node_ptr) {
     user_const_iterator = node_ptr;
 }

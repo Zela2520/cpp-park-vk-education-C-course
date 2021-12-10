@@ -5,53 +5,9 @@
 
 #define MAX_SIZE 1000
 
-/*  head = new Node<T>();
-	tail = new Node<T>();
-	head->m_next = tail;
-	head->m_prev = nullptr;
-	tail->m_next = nullptr;
-	tail->m_prev = head;
-	this->size = 0;
-*/
-
 template <typename T>
 task::list<T>::list() : head(nullptr), tail(nullptr), list_size(0) {}
 
-/*template <typename T>
-task::list<T>::list(size_t count, const T& value) : head(nullptr), tail(nullptr), list_size(0) {
-
-    while (count != this->list_size) {
-
-        if (this->list_size == 0) {
-            this->head = new Node<T>(value);
-            this->tail = this->head;
-        } else {
-            Node<T> *cur_node = this->tail;
-            this->tail = new Node<T>(value, nullptr, this->tail);
-            cur_node->m_next = this->tail;
-        }
-
-        ++this->list_size;
-    }
-}
-
-template <typename T>
-task::list<T>::list(size_t count) {
-
-    while (this->list_size != count) {
-
-        if (this->list_size == 0) {
-            this->head = new Node<T>(0);
-            this->tail = this->head;
-        } else {
-            Node<T> *cur_node = this->tail;
-            this->tail = new Node<T>(0, nullptr, this->tail);
-            cur_node->m_next = this->tail;
-        }
-        
-        ++this->list_size;
-    } // можно было заюзать push_back
-}*/
 template <typename T>
 task::list<T>::list(size_t count, const T& value) : head(nullptr), tail(nullptr), list_size(0) {
     while (count != this->list_size) {
@@ -205,6 +161,7 @@ void task::list<T>::clear() {
 
 template <typename T>
 typename task::list<T>::iterator task::list<T>::insert(const_iterator pos, const T& value) {
+    std::cout << pos->m_data << "INSERT\n";
     if (head == nullptr) {
         push_front();
         std::cout << pos->user_const_iterator->m_data << '\n';
@@ -224,6 +181,7 @@ typename task::list<T>::iterator task::list<T>::insert(const_iterator pos, const
         new_element->m_next->m_prev = new_element;
         return current_iterator;
     }
+    std::cout << pos->m_data << "INSERT\n";
     ++list_size;
 }
 
@@ -300,6 +258,9 @@ void task::list<T>::pop_back() {
 
 template <typename T>
 void task::list<T>::push_front(const T& value) {
+    if (head == nullptr) {
+        push_back(value);
+    }
     Node<T>* after_head = this->head;
 	head = new Node<T>(value, head, nullptr);
 	after_head->m_prev = head;
