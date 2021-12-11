@@ -59,7 +59,6 @@ class list {
 		    using const_pointer = const T*;
 		    using const_reference = const T&;
 		    using iterator_category = std::bidirectional_iterator_tag;
-            using reverse_iterator = std::reverse_iterator<iterator>;
 
         const_iterator();
         const_iterator(Node<T>* node_ptr);
@@ -83,6 +82,11 @@ class list {
 
     using reverse_iterator = std::reverse_iterator<iterator>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+    /*using difference_type = ptrdiff_t;
+    using value_type = T;
+    using pointer = T*;
+    using reference = T&;
+    using iterator_category = std::bidirectional_iterator_tag;*/
 
 
     list();

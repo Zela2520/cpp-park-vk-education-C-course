@@ -322,13 +322,40 @@ void task::list<T>::remove(const T& value) {
 }
 
 template <typename T>
-void task::list<T>::reverse() {}
+void task::list<T>::reverse() {
+    size_t count = this->size() - 1;
+    Node<T>* current = this->head;
+    Node<T>* rev_list = current->m_next;
+    Node<T>* next_rev_list = rev_list->m_next;
+
+    while (count) {
+        if (current != this->head)
+            next_rev_list = next_rev_list->m_next;
+
+        rev_list->m_next = current;
+
+        if (current == this->head) {
+            current->m_next = nullptr;
+        }
+
+        current = rev_list;
+        rev_list = next_rev_list;
+        count--;
+    }
+
+    this->head = current;
+}
 
 template <typename T>
 void task::list<T>::unique() {}
 
 template <typename T>
-void task::list<T>::sort() {}
+void task::list<T>::sort() {
+    Node<T>* min_elem = this->head;
+    for (iterator it = this->begin(); it < this->end(); ++it) {
+
+    } 
+}
 
 /*template<typename T>
 task::list<T>::iterator task::list<T>::search(const T& data) {
