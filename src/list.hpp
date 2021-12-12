@@ -7,7 +7,7 @@ namespace task {
 
 template<class T>
 class list {
-    template <typename>
+    template<typename>
     class Node {
 	    public:
 		Node(const T& data = T(), Node* next = nullptr, Node* prev = nullptr) :
@@ -82,11 +82,6 @@ class list {
 
     using reverse_iterator = std::reverse_iterator<iterator>;
     using const_reverse_iterator = std::reverse_iterator<const_iterator>;
-    /*using difference_type = ptrdiff_t;
-    using value_type = T;
-    using pointer = T*;
-    using reference = T&;
-    using iterator_category = std::bidirectional_iterator_tag;*/
 
 
     list();

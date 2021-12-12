@@ -101,7 +101,7 @@ typename task::list<T>::iterator task::list<T>::begin() const {
 
 template <typename T>
 typename task::list<T>::iterator task::list<T>::end() const {
-    iterator last_node(tail->m_prev);
+    iterator last_node(tail);
     return last_node;
 }
 
@@ -113,13 +113,13 @@ typename task::list<T>::const_iterator task::list<T>::cbegin() const {
 
 template <typename T>
 typename task::list<T>::const_iterator task::list<T>::cend() const {
-    const_iterator last_node(tail->m_prev);
+    const_iterator last_node(tail);
     return last_node;
 }
 
 template <typename T>
 typename task::list<T>::reverse_iterator task::list<T>::rbegin() const {
-    return reverse_iterator(tail->m_prev);
+    return reverse_iterator(tail);
 }
 
 template <typename T>
@@ -129,7 +129,7 @@ typename task::list<T>::reverse_iterator task::list<T>::rend() const {
 
 template <typename T>
 typename task::list<T>::const_reverse_iterator task::list<T>::crbegin() const {
-    return const_reverse_iterator(tail->m_prev);
+    return const_reverse_iterator(tail);
 }
 
 template <typename T>
@@ -170,15 +170,19 @@ typename task::list<T>::iterator task::list<T>::insert(const_iterator pos, const
         return current_iterator;
     } else {
         list<T>::iterator current_iterator(head);
+
         while (current_iterator->user_iterator != pos->user_const_iterator->m_prev) {
             ++current_iterator;
         }
+
         std::cout << pos->user_const_iterator->m_data << '\n';
         std::cout << value << '\n';
+
         Node<T>* new_element = new Node<T>(value, current_iterator->user_iterator->m_next,
         current_iterator->user_iterator);
         current_iterator->user_iterator->next = new_element;
         new_element->m_next->m_prev = new_element;
+
         return current_iterator;
     }
     std::cout << pos->m_data << "INSERT\n";
@@ -351,10 +355,15 @@ void task::list<T>::unique() {}
 
 template <typename T>
 void task::list<T>::sort() {
-    Node<T>* min_elem = this->head;
-    for (iterator it = this->begin(); it < this->end(); ++it) {
+    /*Node<T>* min_elem = this->head;
+    for (iterator out_it = this->begin(); it < this->end(); ++it) {
+        for (iterator in_it = min_elem->m_next; it < this->end(); ++it) {
+            if (min_elem->m_data >= it->user_iterator->m_data) {
 
-    } 
+            }
+        }
+        min_elem = min_elem->m_next;
+    } */
 }
 
 /*template<typename T>
